@@ -1,0 +1,15 @@
+[package]
+name = "hyperlight-nanvix"
+version = "0.1.0"
+edition = "2021"
+description = "A Hyperlight VMM wrapper with out-of-the-box support for running Nanvix microkernel guests"
+
+[dependencies]
+nanvix = { git = "https://github.com/nanvix/nanvix", rev = "fd0b906f2fd014c7fdb4ecbbd83a4171603b251a", features = ["single-process", "hyperlight"] }
+tokio = { version = "1.0", features = ["rt-multi-thread", "macros"] }
+anyhow = "1.0"
+libc = "0.2"
+
+[[example]]
+name = "syscall_interception"
+path = "examples/syscall_interception.rs"
