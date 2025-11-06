@@ -111,8 +111,6 @@ git commit --amend --no-edit -S -s
 git push --force-with-lease <remote-name> <branch-name>
 ```
 
-For more detailed instructions on setting up GPG signing, see [GitHub's documentation on signing commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits).
-
 *Credit: This doc was cribbed from Dapr.*
 
 ### Rust Analyzer
