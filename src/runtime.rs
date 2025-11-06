@@ -22,7 +22,7 @@ impl WorkloadType {
         match self {
             WorkloadType::JavaScript => "qjs",
             WorkloadType::Python => "python3",
-            WorkloadType::Binary => "", // No interpreter needed for binaries
+            WorkloadType::Binary => "binary", // No interpreter needed for binaries
         }
     }
 
@@ -323,8 +323,8 @@ impl Runtime {
                 format!("-S -I {}", workload_path.to_string_lossy())
             }
             WorkloadType::Binary => {
-                // Binary files are executed directly, just pass the path
-                workload_path.to_string_lossy().to_string()
+                // Binary files are executed directly, no script args needed
+                String::new()
             }
         };
 

@@ -62,9 +62,9 @@ docker run --rm \
 #### Run
 
 ```bash
-cd guest-examples
-cargo run -- hello-c
-cargo run -- hello-cpp
+# From the project root
+cargo run -- guest-examples/hello-c
+cargo run -- guest-examples/hello-cpp
 ```
 
 ## Library Usage
@@ -169,5 +169,5 @@ cargo run -- --setup-registry
 
 **Clean socket files if networking issues occur:**
 ```bash
-rm -rf /tmp/hyperlight-nanvix/**
+rm -rf /tmp/hyperlight-nanvix/*
 ```
