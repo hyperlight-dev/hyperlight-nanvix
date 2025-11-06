@@ -6,19 +6,23 @@ use nanvix::registry::Registry;
 use nanvix::sandbox_cache::SandboxCacheConfig;
 use nanvix::terminal::Terminal;
 
+use crate::cache;
+
 /// Supported workload types
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WorkloadType {
     JavaScript,
     Python,
+    Binary,
 }
 
 impl WorkloadType {
-    /// Get the binary name for this workload type
+    /// Get the interpreter binary name for this workload type
     pub fn binary_name(&self) -> &'static str {
         match self {
             WorkloadType::JavaScript => "qjs",
             WorkloadType::Python => "python3",
+            WorkloadType::Binary => "", // No interpreter needed for binaries
         }
     }
 
@@ -27,17 +31,30 @@ impl WorkloadType {
         match self {
             WorkloadType::JavaScript => &["js", "mjs"],
             WorkloadType::Python => &["py"],
+            WorkloadType::Binary => &["elf", "o"],
         }
     }
 
     /// Detect workload type from file extension
     pub fn from_path<P: AsRef<Path>>(path: P) -> Option<Self> {
-        let extension = path.as_ref().extension()?.to_str()?.to_lowercase();
-
-        match extension.as_str() {
-            "js" | "mjs" => Some(WorkloadType::JavaScript),
-            "py" => Some(WorkloadType::Python),
-            _ => None,
+        let path_ref = path.as_ref();
+        
+        if let Some(extension) = path_ref.extension() {
+            let ext_str = extension.to_str()?.to_lowercase();
+            match ext_str.as_str() {
+                "js" | "mjs" => Some(WorkloadType::JavaScript),
+                "py" => Some(WorkloadType::Python),
+                "elf" | "o" => Some(WorkloadType::Binary),
+                _ => None,
+            }
+        } else {
+            // Check if it's an executable binary without extension
+            if path_ref.is_file() {
+                // Simple heuristic: if it has no extension and is a file, treat as binary
+                Some(WorkloadType::Binary)
+            } else {
+                None
+            }
         }
     }
 }
@@ -114,19 +131,7 @@ impl Runtime {
 
     /// Check if a binary exists in the cache and return its path if found
     async fn get_cached_binary_path(&self, binary_name: &str) -> Option<String> {
-        // Check the common cache location for nanvix registry
-        let home_dir = std::env::var("HOME").unwrap_or_else(|_| ".".to_string());
-        let cache_path = std::path::Path::new(&home_dir)
-            .join(".cache")
-            .join("nanvix-registry")
-            .join("bin")
-            .join(binary_name);
-
-        if tokio::fs::metadata(&cache_path).await.is_ok() {
-            Some(cache_path.to_string_lossy().to_string())
-        } else {
-            None
-        }
+        cache::get_cached_binary_path(binary_name).await
     }
 
 
@@ -152,8 +157,11 @@ impl Runtime {
         let machine_type = "hyperlight";
         let deployment_type = "single-process";
 
-        // Check if binaries are cached and get paths directly if available
-        let binary_path = if let Some(cached_path) = self.get_cached_binary_path(workload_type.binary_name()).await {
+        // Get interpreter binary (only needed for scripted workloads)
+        let binary_path = if matches!(workload_type, WorkloadType::Binary) {
+            // For binary workloads, we don't need an interpreter
+            String::new()
+        } else if let Some(cached_path) = self.get_cached_binary_path(workload_type.binary_name()).await {
             log::info!(
                 "Using cached {} binary: {}",
                 workload_type.binary_name(),
@@ -251,12 +259,15 @@ impl Runtime {
 
         // Prepare execution paths and metadata
         let (script_args, script_name) = self.prepare_script_args(workload_type, Path::new(&absolute_workload_path))?;
-        let effective_binary_path = if matches!(workload_type, WorkloadType::Python) {
-            "bin/python3".to_string()
-        } else {
-            binary_path.clone()
+        let effective_binary_path = match workload_type {
+            WorkloadType::Python => "bin/python3".to_string(),
+            WorkloadType::Binary => absolute_workload_path.clone(),
+            _ => binary_path.clone(),
         };
-        let effective_script_args = script_args;
+        let effective_script_args = match workload_type {
+            WorkloadType::Binary => String::new(), // No args for binary execution
+            _ => script_args,
+        };
 
         let unique_app_name = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)?
@@ -310,6 +321,10 @@ impl Runtime {
             }
             WorkloadType::Python => {
                 format!("-S -I {}", workload_path.to_string_lossy())
+            }
+            WorkloadType::Binary => {
+                // Binary files are executed directly, just pass the path
+                workload_path.to_string_lossy().to_string()
             }
         };
 
