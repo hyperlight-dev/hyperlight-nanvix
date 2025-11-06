@@ -1,1 +1,6 @@
 target/
+
+# Compiled binaries
+guest-examples/hello-c
+guest-examples/hello-cpp
+guest-examples/*.elf
