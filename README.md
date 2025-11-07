@@ -69,6 +69,8 @@ cargo run -- guest-examples/hello-cpp
 
 ## Library Usage
 
+### Rust
+
 ```rust
 use hyperlight_nanvix::{Sandbox, RuntimeConfig};
 
@@ -89,6 +91,31 @@ async fn main() -> anyhow::Result<()> {
     Ok(())
 }
 ```
+
+### Node.js
+
+Install from npm (after building):
+```bash
+npm pack
+npm install hyperlight-nanvix-0.1.0.tgz
+```
+
+Usage:
+```javascript
+const { NanvixSandbox } = require('hyperlight-nanvix');
+
+const sandbox = new NanvixSandbox({
+    logDirectory: '/tmp/hyperlight-nanvix',
+    tmpDirectory: '/tmp/hyperlight-nanvix'
+});
+
+const result = await sandbox.run('guest-examples/hello.js');
+if (result.success) {
+    console.log('Execution completed');
+}
+```
+
+See `examples/ai-generated-scripts/` for a complete example that generates and executes AI code safely.
 
 ## What's Available
 
