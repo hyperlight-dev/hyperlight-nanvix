@@ -10,6 +10,20 @@ tokio = { version = "1.0", features = ["rt-multi-thread", "macros"] }
 anyhow = "1.0"
 libc = "0.2"
 
+# NAPI bindings (optional)
+napi = { version = "3.3.0", optional = true, features = ["async", "serde-json"] }
+napi-derive = { version = "3.3.0", optional = true }
+
+[features]
+default = []
+napi = ["dep:napi", "dep:napi-derive", "dep:napi-build"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
 [[example]]
 name = "syscall_interception"
 path = "examples/syscall_interception.rs"
+
+[build-dependencies]
+napi-build = { version = "2.2.3", optional = true }

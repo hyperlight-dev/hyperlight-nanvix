@@ -4,6 +4,9 @@ use std::path::Path;
 pub mod cache;
 pub mod runtime;
 
+#[cfg(feature = "napi")]
+pub mod napi;
+
 #[cfg(test)]
 mod unit_tests;
 

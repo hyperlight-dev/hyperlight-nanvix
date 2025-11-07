@@ -1,4 +1,14 @@
+# Rust
 target/
+
+# Node.js
+node_modules/
+package-lock.json
+
+# NAPI generated files
+*.node
+index.js
+index.d.ts
 
 # Compiled binaries
 guest-examples/hello-c
