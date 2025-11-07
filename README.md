@@ -2,7 +2,7 @@
 
 > ⚠️ **Note**: This wrapper currently only supports Hyperlight's KVM backend
 
-A Hyperlight VMM wrapper for running JavaScript, Python, C, and C++ programs in Nanvix microkernel sandboxes.
+A Hyperlight VMM wrapper for running JavaScript, Python, C, and C++ programs in [Nanvix OS](https://github.com/nanvix/).
 
 ## Quick Start
 
