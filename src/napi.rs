@@ -14,7 +14,7 @@ pub struct NanvixSandbox {
 pub struct SandboxConfig {
     /// Directory for storing logs
     pub log_directory: Option<String>,
-    /// Directory for temporary files  
+    /// Directory for temporary files
     pub tmp_directory: Option<String>,
 }
 

@@ -11,7 +11,7 @@ anyhow = "1.0"
 libc = "0.2"
 
 # NAPI bindings (optional)
-napi = { version = "3.3.0", optional = true, features = ["async", "serde-json"] }
+napi = { version = "3.5.0", optional = true, features = ["async", "serde-json"] }
 napi-derive = { version = "3.3.0", optional = true }
 
 [features]
@@ -26,4 +26,4 @@ name = "syscall_interception"
 path = "examples/syscall_interception.rs"
 
 [build-dependencies]
-napi-build = { version = "2.2.3", optional = true }
+napi-build = { version = "2.3.0", optional = true }
