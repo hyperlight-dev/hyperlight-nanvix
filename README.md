@@ -6,9 +6,9 @@ A Hyperlight VMM wrapper for running JavaScript, Python, C, and C++ programs in 
 
 ## Quick Start
 
-### JavaScript & Python
+### Rust CLI
 
-Just run your scripts directly:
+Run scripts directly:
 
 ```bash
 # JavaScript
@@ -16,6 +16,15 @@ cargo run -- guest-examples/hello.js
 
 # Python  
 cargo run -- guest-examples/hello.py
+```
+
+### Node.js
+
+Run from JavaScript/Node.js:
+
+```bash
+npm run build
+node examples/napi.js
 ```
 
 ### C & C++ Programs
@@ -94,13 +103,7 @@ async fn main() -> anyhow::Result<()> {
 
 ### Node.js
 
-Install from npm (after building):
-```bash
-npm pack
-npm install hyperlight-nanvix-0.1.0.tgz
-```
-
-Usage:
+Basic usage with the library:
 ```javascript
 const { NanvixSandbox } = require('hyperlight-nanvix');
 
@@ -113,6 +116,13 @@ const result = await sandbox.run('guest-examples/hello.js');
 if (result.success) {
     console.log('Execution completed');
 }
+```
+
+To embed in your own project:
+```bash
+npm run build
+npm pack
+npm install hyperlight-nanvix-0.1.0.tgz
 ```
 
 See `examples/ai-generated-scripts/` for a complete example that generates and executes AI code safely.
