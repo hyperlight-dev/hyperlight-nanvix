@@ -14,7 +14,7 @@ Run scripts directly:
 # JavaScript
 cargo run -- guest-examples/hello.js
 
-# Python  
+# Python
 cargo run -- guest-examples/hello.py
 ```
 
@@ -55,7 +55,7 @@ docker run --rm \
         -Wl,--start-group /nanvix-registry/lib/libposix.a \
         /opt/nanvix/i686-nanvix/lib/libc.a -Wl,--end-group'
 
-# C++ program  
+# C++ program
 docker run --rm \
     -v "$(pwd):/mnt" \
     -v "$HOME/.cache/nanvix-registry:/nanvix-registry:ro" \
@@ -90,13 +90,13 @@ async fn main() -> anyhow::Result<()> {
         .with_tmp_directory("/tmp/hyperlight-nanvix");
 
     let mut sandbox = Sandbox::new(config)?;
-    
+
     // Works with any supported file type
     sandbox.run("guest-examples/hello.js").await?;    // JavaScript
-    sandbox.run("guest-examples/hello.py").await?;    // Python  
+    sandbox.run("guest-examples/hello.py").await?;    // Python
     sandbox.run("guest-examples/hello-c").await?;     // C binary
     sandbox.run("guest-examples/hello-cpp").await?;   // C++ binary
-    
+
     Ok(())
 }
 ```
@@ -104,6 +104,7 @@ async fn main() -> anyhow::Result<()> {
 ### Node.js
 
 Basic usage with the library:
+
 ```javascript
 const { NanvixSandbox } = require('hyperlight-nanvix');
 
@@ -119,6 +120,7 @@ if (result.success) {
 ```
 
 To embed in your own project:
+
 ```bash
 npm run build
 npm pack
@@ -138,14 +140,16 @@ See `examples/ai-generated-scripts/` for a complete example that generates and e
 ### C/C++ Libraries
 
 Standard functions work as expected:
+
 - **I/O**: `printf`, `scanf`, `fopen`, `fclose`, `fread`, `fwrite`
 - **Memory**: `malloc`, `free`
 - **Strings**: `strlen`, `strcpy`, `strcmp`
 - **C++**: Classes, STL containers (`std::vector`, `std::string`), `iostream`
 
 Available libraries:
+
 - **Core**: `libposix.a`, `libc.a`, `libm.a`
-- **C++**: `libstdc++.a`, `libsupc++.a` 
+- **C++**: `libstdc++.a`, `libsupc++.a`
 - **Crypto**: `libcrypto.a`, `libssl.a` (OpenSSL)
 - **Compression**: `libz.a` (zlib)
 - **Math/Science**: `libopenblas.a` (OpenBLAS for linear algebra)
@@ -153,8 +157,9 @@ Available libraries:
 ## Examples
 
 Check `guest-examples/` for sample programs:
+
 - `hello.js` - JavaScript with JSON and functions
-- `hello.py` - Python with modules and data structures  
+- `hello.py` - Python with modules and data structures
 - `hello-c.c` - C program with basic operations
 - `hello-cpp.cpp` - C++ program with classes and STL
 - `file_ops.js` - JavaScript demonstrating file operations
@@ -199,12 +204,14 @@ cargo run --example syscall_interception
 ## Troubleshooting
 
 **Clear cache and re-download:**
+
 ```bash
 cargo run -- --clear-registry
 cargo run -- --setup-registry
 ```
 
 **Clean socket files if networking issues occur:**
+
 ```bash
 rm -rf /tmp/hyperlight-nanvix/*
 ```
