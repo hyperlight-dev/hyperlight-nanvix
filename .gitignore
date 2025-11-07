@@ -10,6 +10,9 @@ package-lock.json
 index.js
 index.d.ts
 
+# npm pack tarballs
+*.tgz
+
 # Compiled binaries
 guest-examples/hello-c
 guest-examples/hello-cpp

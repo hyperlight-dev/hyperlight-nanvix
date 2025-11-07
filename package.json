@@ -12,6 +12,11 @@
     ]
   },
   "license": "Apache-2.0",
+  "files": [
+    "*.node",
+    "index.js",
+    "index.d.ts"
+  ],
   "devDependencies": {
     "@napi-rs/cli": "^3.4.0"
   },

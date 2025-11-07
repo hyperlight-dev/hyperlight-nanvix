@@ -1,0 +1,14 @@
+{
+  "name": "ai-generated-scripts-example",
+  "version": "1.0.0",
+  "description": "Example of running AI-generated JavaScript in Nanvix sandbox",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "hyperlight-nanvix": "file:../../hyperlight-nanvix-0.1.0.tgz",
+    "openai": "^4.0.0",
+    "dotenv": "^16.0.0"
+  }
+}
