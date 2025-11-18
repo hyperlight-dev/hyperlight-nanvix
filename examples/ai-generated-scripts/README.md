@@ -7,6 +7,8 @@ AI-generated code from LLMs is untrusted and should never run directly in the ho
 1. Pack the hyperlight-nanvix package from the root:
 ```bash
 cd ../..
+npm install
+npm run build
 npm pack
 ```
 

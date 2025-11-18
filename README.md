@@ -23,6 +23,7 @@ cargo run -- guest-examples/hello.py
 Run from JavaScript/Node.js:
 
 ```bash
+npm install
 npm run build
 node examples/napi.js
 ```
