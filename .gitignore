@@ -13,6 +13,14 @@ index.d.ts
 # npm pack tarballs
 *.tgz
 
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+python/**/*.so
+
 # Compiled binaries
 guest-examples/hello-c
 guest-examples/hello-cpp
