@@ -28,6 +28,29 @@ npm run build
 node examples/napi.js
 ```
 
+### Python
+
+
+> **Setup (one-time):**
+> ```bash
+> pipx install maturin # to install, see: https://pipx.pypa.io/stable/
+>
+> pipx ensurepath  # adds ~/.local/bin to PATH
+>
+> # Restart your terminal or run: export PATH="$HOME/.local/bin:$PATH"
+> ```
+
+Run from Python:
+```bash
+# Create and activate venv
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Build the Rust extension and install it in venv then run example
+maturin develop --features python
+python examples/python_sdk_example.py
+```
+
 ### C & C++ Programs
 
 For compiled languages, you'll need to compile first, then run.
@@ -118,6 +141,26 @@ const result = await sandbox.run('guest-examples/hello.js');
 if (result.success) {
     console.log('Execution completed');
 }
+```
+
+### Python
+
+```python
+import asyncio
+from hyperlight_nanvix import NanvixSandbox, SandboxConfig
+
+async def main():
+    config = SandboxConfig(
+        log_directory="/tmp/hyperlight-nanvix",
+        tmp_directory="/tmp/hyperlight-nanvix"
+    )
+    sandbox = NanvixSandbox(config)
+    
+    result = await sandbox.run('guest-examples/hello.js')
+    if result.success:
+        print('Execution completed')
+
+asyncio.run(main())
 ```
 
 To embed in your own project:
