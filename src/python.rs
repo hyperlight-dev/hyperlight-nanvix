@@ -130,7 +130,8 @@ impl NanvixSandbox {
         
         pyo3_asyncio::tokio::future_into_py(py, async move {
             runtime.clear_cache().await
-                .map_err(|e| PyRuntimeError::new_err(format!("Failed to clear cache: {}", e)))
+                .map_err(|e| PyRuntimeError::new_err(format!("Failed to clear cache: {}", e)))?;
+            Ok(true)
         })
     }
 
