@@ -7,6 +7,9 @@ pub mod runtime;
 #[cfg(feature = "napi")]
 pub mod napi;
 
+#[cfg(feature = "python")]
+pub mod python;
+
 #[cfg(test)]
 mod unit_tests;
 
