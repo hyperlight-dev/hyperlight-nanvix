@@ -125,7 +125,7 @@ pub struct Runtime {
 
 impl Runtime {
     pub fn new(config: RuntimeConfig) -> Result<Self> {
-        let registry = Registry::new();
+        let registry = Registry::new(None);
         Ok(Self { config, registry })
     }
 

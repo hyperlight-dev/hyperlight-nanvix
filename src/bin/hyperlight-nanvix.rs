@@ -20,7 +20,7 @@ async fn setup_registry_command() -> Result<()> {
         println!("Registry already set up at ~/.cache/nanvix-registry/");
     } else {
         // Trigger registry download by requesting key binaries
-        let registry = Registry::new();
+        let registry = Registry::new(None);
         
         if !kernel_cached {
             print!("Downloading kernel.elf... ");
@@ -135,6 +135,7 @@ async fn main() -> Result<()> {
             false,
             DEFAULT_LOG_LEVEL,
             "/tmp/hyperlight-nanvix".to_string(),
+            None,
         );
     }
 
