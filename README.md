@@ -67,11 +67,12 @@ This downloads the toolchain and runtime files to `~/.cache/nanvix-registry/`.
 
 ```bash
 cd guest-examples
+NANVIX_RELEASE=$(ls -d "$HOME/.cache/nanvix-registry"/*/ | head -n1)
 
 # C program
 docker run --rm \
     -v "$(pwd):/mnt" \
-    -v "$HOME/.cache/nanvix-registry:/nanvix-registry:ro" \
+    -v "$NANVIX_RELEASE:/nanvix-registry:ro" \
     nanvix/toolchain:latest \
     /bin/bash -l -c 'cd /mnt && /opt/nanvix/bin/i686-nanvix-gcc \
         -z noexecstack -T /nanvix-registry/lib/user.ld \
@@ -82,7 +83,7 @@ docker run --rm \
 # C++ program
 docker run --rm \
     -v "$(pwd):/mnt" \
-    -v "$HOME/.cache/nanvix-registry:/nanvix-registry:ro" \
+    -v "$NANVIX_RELEASE:/nanvix-registry:ro" \
     nanvix/toolchain:latest \
     /bin/bash -l -c 'cd /mnt && /opt/nanvix/bin/i686-nanvix-g++ \
         -z noexecstack -T /nanvix-registry/lib/user.ld \

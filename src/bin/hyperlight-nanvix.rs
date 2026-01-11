@@ -49,18 +49,8 @@ async fn setup_registry_command() -> Result<()> {
         println!("\nRegistry setup complete at ~/.cache/nanvix-registry/");
     }
     
-    println!("\nTo compile C/C++ programs:");
-    println!("docker pull nanvix/toolchain:latest");
-    
-    println!("\nCompilation examples:");
-    println!("# C program:");
-    println!("docker run --rm -v \"$(pwd):/mnt\" -v \"$HOME/.cache/nanvix-registry:/nanvix-registry:ro\" nanvix/toolchain:latest /bin/bash -l -c 'cd /mnt && /opt/nanvix/bin/i686-nanvix-gcc -z noexecstack -T /nanvix-registry/lib/user.ld -o hello-c hello-c.c -Wl,--start-group /nanvix-registry/lib/libposix.a /opt/nanvix/i686-nanvix/lib/libc.a -Wl,--end-group'");
-    
-    println!("\n# C++ program:");
-    println!("docker run --rm -v \"$(pwd):/mnt\" -v \"$HOME/.cache/nanvix-registry:/nanvix-registry:ro\" nanvix/toolchain:latest /bin/bash -l -c 'cd /mnt && /opt/nanvix/bin/i686-nanvix-g++ -z noexecstack -T /nanvix-registry/lib/user.ld -o hello-cpp hello-cpp.cpp -Wl,--start-group /nanvix-registry/lib/libposix.a /opt/nanvix/i686-nanvix/lib/libc.a /opt/nanvix/i686-nanvix/lib/libstdc++.a -Wl,--end-group'");
-    
-    println!("\nAfter compilation, run binaries with:");
-    println!("cargo run -- ./hello");
+    println!("\nTo compile and run C/C++ programs, see the README:");
+    println!("https://github.com/hyperlight-dev/hyperlight-nanvix?tab=readme-ov-file#c--c-programs");
     
     Ok(())
 }
