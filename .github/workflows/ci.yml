@@ -52,7 +52,7 @@ jobs:
         run: cargo test --release
 
       - name: Setup registry
-        run: cargo run --release -- --setup-registry
+        run: cargo run --release -- setup-registry
 
       - name: Run CLI with JavaScript
         run: cargo run --release -- guest-examples/hello.js
@@ -102,7 +102,7 @@ jobs:
         run: npm run build
 
       - name: Setup registry
-        run: cargo run --release -- --setup-registry
+        run: cargo run --release -- setup-registry
 
       - name: Run Node.js example
         run: node examples/napi.js
@@ -149,7 +149,7 @@ jobs:
         run: .venv/bin/maturin develop --features python
 
       - name: Setup registry
-        run: cargo run --release -- --setup-registry
+        run: cargo run --release -- setup-registry
 
       - name: Run Python example
         run: .venv/bin/python examples/python_sdk_example.py

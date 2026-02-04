@@ -58,7 +58,7 @@ For compiled languages, you'll need to compile first, then run.
 #### Setup (one-time)
 
 ```bash
-cargo run -- --setup-registry
+cargo run -- setup-registry
 ```
 
 This downloads the toolchain and runtime files to `~/.cache/nanvix-registry/`.
@@ -251,8 +251,8 @@ cargo run --example syscall_interception
 **Clear cache and re-download:**
 
 ```bash
-cargo run -- --clear-registry
-cargo run -- --setup-registry
+cargo run -- clear-registry
+cargo run -- setup-registry
 ```
 
 **Clean socket files if networking issues occur:**
