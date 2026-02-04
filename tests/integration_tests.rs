@@ -62,8 +62,8 @@ async fn test_syscall_interception() {
         .as_nanos();
     let config = RuntimeConfig::new()
         .with_syscall_table(Arc::new(syscall_table))
-        .with_log_directory(&format!("/tmp/hyperlight-syscall-test-{}", timestamp))
-        .with_tmp_directory(&format!("/tmp/hyperlight-syscall-tmp-{}", timestamp));
+        .with_log_directory(format!("/tmp/hyperlight-syscall-test-{}", timestamp))
+        .with_tmp_directory(format!("/tmp/hyperlight-syscall-tmp-{}", timestamp));
 
     let mut sandbox = Sandbox::new(config).expect("Failed to create sandbox with syscall table");
 

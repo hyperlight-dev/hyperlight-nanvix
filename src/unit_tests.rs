@@ -1,5 +1,5 @@
 #[cfg(test)]
-mod unit_tests {
+mod tests {
     use crate::runtime::{Runtime, WorkloadType};
     use crate::*;
     use std::sync::Arc;

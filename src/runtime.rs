@@ -289,7 +289,7 @@ impl Runtime {
         log::debug!("Script args: {}", effective_script_args);
 
         // Execute workload
-        let _execution_result = terminal
+        terminal
             .run(
                 Some(&script_name),
                 Some(&unique_app_name),
