@@ -1,5 +1,5 @@
-use pyo3::prelude::*;
 use pyo3::exceptions::PyRuntimeError;
+use pyo3::prelude::*;
 use std::sync::Arc;
 
 use crate::runtime::{Runtime, RuntimeConfig};
@@ -86,7 +86,9 @@ impl NanvixSandbox {
         let runtime = Runtime::new(runtime_config)
             .map_err(|e| PyRuntimeError::new_err(format!("Failed to create runtime: {}", e)))?;
 
-        Ok(Self { runtime: Arc::new(runtime) })
+        Ok(Self {
+            runtime: Arc::new(runtime),
+        })
     }
 
     /// Run a workload in the sandbox
@@ -103,7 +105,7 @@ impl NanvixSandbox {
     ///     ...     print("Success!")
     fn run<'py>(&self, py: Python<'py>, workload_path: String) -> PyResult<&'py PyAny> {
         let runtime = Arc::clone(&self.runtime);
-        
+
         pyo3_asyncio::tokio::future_into_py(py, async move {
             match runtime.run(&workload_path).await {
                 Ok(()) => Ok(WorkloadResult {
@@ -127,9 +129,11 @@ impl NanvixSandbox {
     ///     >>> success = await sandbox.clear_cache()
     fn clear_cache<'py>(&self, py: Python<'py>) -> PyResult<&'py PyAny> {
         let runtime = Arc::clone(&self.runtime);
-        
+
         pyo3_asyncio::tokio::future_into_py(py, async move {
-            runtime.clear_cache().await
+            runtime
+                .clear_cache()
+                .await
                 .map_err(|e| PyRuntimeError::new_err(format!("Failed to clear cache: {}", e)))?;
             Ok(true)
         })

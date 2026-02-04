@@ -38,7 +38,7 @@ impl WorkloadType {
     /// Detect workload type from file extension
     pub fn from_path<P: AsRef<Path>>(path: P) -> Option<Self> {
         let path_ref = path.as_ref();
-        
+
         if let Some(extension) = path_ref.extension() {
             let ext_str = extension.to_str()?.to_lowercase();
             match ext_str.as_str() {
@@ -134,8 +134,6 @@ impl Runtime {
         cache::get_cached_binary_path(binary_name).await
     }
 
-
-
     /// Clear the nanvix registry cache to force fresh downloads
     pub async fn clear_cache(&self) -> Result<()> {
         log::info!("Clearing nanvix registry cache...");
@@ -161,7 +159,10 @@ impl Runtime {
         let binary_path = if matches!(workload_type, WorkloadType::Binary) {
             // For binary workloads, we don't need an interpreter
             String::new()
-        } else if let Some(cached_path) = self.get_cached_binary_path(workload_type.binary_name()).await {
+        } else if let Some(cached_path) = self
+            .get_cached_binary_path(workload_type.binary_name())
+            .await
+        {
             log::info!(
                 "Using cached {} binary: {}",
                 workload_type.binary_name(),
@@ -179,7 +180,8 @@ impl Runtime {
         };
 
         // Get kernel path for terminal configuration
-        let kernel_path = if let Some(cached_path) = self.get_cached_binary_path("kernel.elf").await {
+        let kernel_path = if let Some(cached_path) = self.get_cached_binary_path("kernel.elf").await
+        {
             log::info!("Using cached kernel binary: {}", cached_path);
             cached_path
         } else {
@@ -228,7 +230,10 @@ impl Runtime {
                     log::info!("Changed working directory to: {}", base_path.display());
                 }
             } else {
-                log::warn!("Could not determine registry base directory from binary path: {}", binary_path);
+                log::warn!(
+                    "Could not determine registry base directory from binary path: {}",
+                    binary_path
+                );
             }
             current_dir
         } else {
@@ -258,7 +263,8 @@ impl Runtime {
         let mut terminal: Terminal<()> = Terminal::new(sandbox_cache_config);
 
         // Prepare execution paths and metadata
-        let (script_args, script_name) = self.prepare_script_args(workload_type, Path::new(&absolute_workload_path))?;
+        let (script_args, script_name) =
+            self.prepare_script_args(workload_type, Path::new(&absolute_workload_path))?;
         let effective_binary_path = match workload_type {
             WorkloadType::Python => "bin/python3".to_string(),
             WorkloadType::Binary => absolute_workload_path.clone(),

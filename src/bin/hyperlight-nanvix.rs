@@ -10,58 +10,66 @@ const DEFAULT_LOG_LEVEL: &str = "info";
 
 async fn setup_registry_command() -> Result<()> {
     println!("Setting up Nanvix registry...");
-    
+
     // Check cache status first using shared cache utilities
     let kernel_cached = cache::is_binary_cached("kernel.elf");
     let qjs_cached = cache::is_binary_cached("qjs");
     let python_cached = cache::is_binary_cached("python3");
-    
+
     if kernel_cached && qjs_cached && python_cached {
         println!("Registry already set up at ~/.cache/nanvix-registry/");
     } else {
         // Trigger registry download by requesting key binaries
         let registry = Registry::new(None);
-        
+
         if !kernel_cached {
             print!("Downloading kernel.elf... ");
-            let _kernel = registry.get_cached_binary("hyperlight", "single-process", "kernel.elf").await?;
+            let _kernel = registry
+                .get_cached_binary("hyperlight", "single-process", "kernel.elf")
+                .await?;
             println!("done");
         } else {
             println!("kernel.elf already cached");
         }
-        
+
         if !qjs_cached {
             print!("Downloading qjs binary... ");
-            let _qjs = registry.get_cached_binary("hyperlight", "single-process", "qjs").await?;
+            let _qjs = registry
+                .get_cached_binary("hyperlight", "single-process", "qjs")
+                .await?;
             println!("done");
         } else {
             println!("qjs already cached");
         }
-        
+
         if !python_cached {
             print!("Downloading python3 binary... ");
-            let _python = registry.get_cached_binary("hyperlight", "single-process", "python3").await?;
+            let _python = registry
+                .get_cached_binary("hyperlight", "single-process", "python3")
+                .await?;
             println!("done");
         } else {
             println!("python3 already cached");
         }
-        
+
         println!("\nRegistry setup complete at ~/.cache/nanvix-registry/");
     }
-    
+
     println!("\nTo compile and run C/C++ programs, see the README:");
-    println!("https://github.com/hyperlight-dev/hyperlight-nanvix?tab=readme-ov-file#c--c-programs");
-    
+    println!(
+        "https://github.com/hyperlight-dev/hyperlight-nanvix?tab=readme-ov-file#c--c-programs"
+    );
+
     Ok(())
 }
 
 async fn clear_registry_command() -> Result<()> {
     println!("Clearing Nanvix registry cache...");
-    
+
     // Create a minimal config to instantiate the Sandbox for cache clearing
     let config = RuntimeConfig::new();
     let sandbox = Sandbox::new(config)?;
-    
+
     match sandbox.clear_cache().await {
         Ok(()) => println!("Cache cleared successfully"),
         Err(e) => {
@@ -69,7 +77,7 @@ async fn clear_registry_command() -> Result<()> {
             std::process::exit(1);
         }
     }
-    
+
     println!("Run 'cargo run -- --setup-registry' to re-download if needed.");
     Ok(())
 }
