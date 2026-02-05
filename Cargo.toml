@@ -5,18 +5,29 @@ edition = "2021"
 description = "A Hyperlight VMM wrapper with out-of-the-box support for running Nanvix microkernel guests"
 
 [dependencies]
-nanvix = { git = "https://github.com/nanvix/nanvix", rev = "4cde8f1903f54b6cf6117f0ea5061a1c00a68973", features = ["single-process", "hyperlight"] }
+nanvix = { git = "https://github.com/nanvix/nanvix", rev = "7752e9f2deb4a5606f9885e4c130eec4ea583de1", features = [
+    "single-process",
+    "hyperlight",
+] }
 tokio = { version = "1.0", features = ["rt-multi-thread", "macros"] }
 anyhow = "1.0"
 libc = "0.2.178"
 
 # NAPI bindings (optional)
-napi = { version = "3.5.0", optional = true, features = ["async", "serde-json"] }
+napi = { version = "3.5.0", optional = true, features = [
+    "async",
+    "serde-json",
+] }
 napi-derive = { version = "3.3.0", optional = true }
 
 # Python bindings (optional)
-pyo3 = { version = "0.20", optional = true, features = ["extension-module", "abi3-py38"] }
-pyo3-asyncio = { version = "0.20", optional = true, features = ["tokio-runtime"] }
+pyo3 = { version = "0.20", optional = true, features = [
+    "extension-module",
+    "abi3-py38",
+] }
+pyo3-asyncio = { version = "0.20", optional = true, features = [
+    "tokio-runtime",
+] }
 
 [features]
 default = []
