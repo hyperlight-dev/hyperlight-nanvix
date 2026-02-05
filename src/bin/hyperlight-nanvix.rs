@@ -1,9 +1,37 @@
 use anyhow::Result;
+use clap::{Parser, Subcommand};
 use hyperlight_nanvix::{cache, RuntimeConfig, Sandbox};
 use nanvix::log;
 use nanvix::registry::Registry;
-use std::env;
-use std::path::Path;
+use std::path::PathBuf;
+
+/// A Hyperlight VMM wrapper with out-of-the-box support for running Nanvix microkernel guests
+#[derive(Parser)]
+#[command(name = "hyperlight-nanvix")]
+#[command(about = "Run scripts in a Nanvix microkernel guest")]
+#[command(
+    after_help = "Supported file types: .js, .mjs (JavaScript), .py (Python), .elf, .o (Binary)"
+)]
+struct Cli {
+    /// Show detailed nanvix logging
+    #[arg(long)]
+    verbose: bool,
+
+    #[command(subcommand)]
+    command: Option<Commands>,
+
+    /// Path to the script to run
+    #[arg(value_name = "SCRIPT")]
+    script_path: Option<PathBuf>,
+}
+
+#[derive(Subcommand)]
+enum Commands {
+    /// Download nanvix registry and show compilation instructions
+    SetupRegistry,
+    /// Clear the nanvix registry cache
+    ClearRegistry,
+}
 
 /// Default log-level (overridden by RUST_LOG environment variable if set).
 const DEFAULT_LOG_LEVEL: &str = "info";
@@ -78,48 +106,31 @@ async fn clear_registry_command() -> Result<()> {
         }
     }
 
-    println!("Run 'cargo run -- --setup-registry' to re-download if needed.");
+    println!("Run 'cargo run -- setup-registry' to re-download if needed.");
     Ok(())
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // Parse command line arguments first
-    let args: Vec<String> = env::args().collect();
+    let cli = Cli::parse();
 
-    // Check for flags
-    let verbose = args.contains(&"--verbose".to_string());
-    let setup_registry = args.contains(&"--setup-registry".to_string());
-    let clear_registry = args.contains(&"--clear-registry".to_string());
-
-    // Handle setup-registry command
-    if setup_registry {
-        return setup_registry_command().await;
+    // Handle subcommands
+    if let Some(command) = cli.command {
+        return match command {
+            Commands::SetupRegistry => setup_registry_command().await,
+            Commands::ClearRegistry => clear_registry_command().await,
+        };
     }
 
-    // Handle clear-registry command
-    if clear_registry {
-        return clear_registry_command().await;
-    }
-
-    // Find the script argument (first non-flag argument)
-    let script_arg = args
-        .iter()
-        .position(|arg| !arg.starts_with("--") && !arg.ends_with("hyperlight-nanvix"));
-
-    let script_path = if let Some(idx) = script_arg {
-        Path::new(&args[idx])
-    } else {
-        eprintln!("Usage: {} [--verbose] <script_path>", args[0]);
-        eprintln!("       {} --setup-registry", args[0]);
-        eprintln!("       {} --clear-registry", args[0]);
-        eprintln!("Supported file types: .js, .mjs (JavaScript), .py (Python), .elf, .o (Binary)");
-        eprintln!("Options:");
-        eprintln!("  --verbose         Show detailed nanvix logging");
-        eprintln!("  --setup-registry  Download nanvix registry and show compilation instructions");
-        eprintln!("  --clear-registry  Clear the nanvix registry cache");
+    // Require script path for default operation
+    let script_path = cli.script_path.unwrap_or_else(|| {
+        eprintln!("error: the following required arguments were not provided:\n  <SCRIPT>\n");
+        eprintln!("Usage: hyperlight-nanvix [OPTIONS] <SCRIPT>");
+        eprintln!("       hyperlight-nanvix setup-registry");
+        eprintln!("       hyperlight-nanvix clear-registry");
+        eprintln!("\nFor more information, try '--help'.");
         std::process::exit(1);
-    };
+    });
 
     // Check if file exists
     if !script_path.exists() {
@@ -128,7 +139,7 @@ async fn main() -> Result<()> {
     }
 
     // Initialize nanvix logging only when --verbose is specified
-    if verbose {
+    if cli.verbose {
         log::init(
             false,
             DEFAULT_LOG_LEVEL,
@@ -146,7 +157,7 @@ async fn main() -> Result<()> {
     let mut sandbox = Sandbox::new(config)?;
 
     // Run the workload
-    match sandbox.run(script_path).await {
+    match sandbox.run(&script_path).await {
         Ok(()) => {}
         Err(e) => {
             eprintln!("Error running workload: {}", e);
