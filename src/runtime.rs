@@ -85,10 +85,22 @@ impl std::fmt::Debug for RuntimeConfig {
 
 impl Default for RuntimeConfig {
     fn default() -> Self {
+        use std::process;
+        use std::time::{SystemTime, UNIX_EPOCH};
+
+        // Generate unique directory suffix using timestamp and PID to avoid conflicts
+        // when multiple tests or instances run in parallel
+        let unique_id = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map(|d| d.as_nanos())
+            .unwrap_or(0);
+        let pid = process::id();
+        let unique_suffix = format!("{}-{}", unique_id, pid);
+
         Self {
             syscall_table: None,
-            log_directory: "/tmp/hyperlight-nanvix".to_string(),
-            tmp_directory: "/tmp/hyperlight-nanvix".to_string(),
+            log_directory: format!("/tmp/hyperlight-nanvix-{}", unique_suffix),
+            tmp_directory: format!("/tmp/hyperlight-nanvix-{}", unique_suffix),
         }
     }
 }
@@ -244,18 +256,24 @@ impl Runtime {
         let console_log_path = format!("{}/guest-console.log", &self.config.log_directory);
         let console_file = Some(console_log_path.clone());
 
+        // Use tmp_directory for toolchain and snapshot paths to ensure uniqueness
+        let toolchain_path = format!("{}/toolchain", &self.config.tmp_directory);
+        let snapshot_path = format!("{}/snapshot.bin", &self.config.tmp_directory);
+
         let sandbox_cache_config = SandboxCacheConfig::new(
             nanvix::syscomm::SocketType::Unix,
             nanvix::syscomm::SocketType::Unix,
             nanvix::syscomm::SocketType::Unix,
             console_file,
             None,
+            None,
+            0,
             &kernel_path,
             syscall_table,
-            "/tmp/hyperlight-nanvix/toolchain",
+            &toolchain_path,
             &self.config.log_directory,
             false,
-            "/tmp/hyperlight-nanvix/snapshot.bin",
+            &snapshot_path,
             &self.config.tmp_directory,
         );
 

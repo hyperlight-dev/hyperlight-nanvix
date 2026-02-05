@@ -98,9 +98,16 @@ async fn test_nonexistent_file() {
 
 #[tokio::test]
 async fn test_runtime_config_customization() {
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    // Use unique directories to avoid conflicts between parallel tests
+    let timestamp = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .unwrap()
+        .as_nanos();
     let config = RuntimeConfig::new()
-        .with_log_directory("/tmp/hyperlight-test-log")
-        .with_tmp_directory("/tmp/hyperlight-test-tmp");
+        .with_log_directory(format!("/tmp/hyperlight-test-log-{}", timestamp))
+        .with_tmp_directory(format!("/tmp/hyperlight-test-tmp-{}", timestamp));
 
     let mut sandbox = Sandbox::new(config).expect("Failed to create sandbox with custom config");
 
