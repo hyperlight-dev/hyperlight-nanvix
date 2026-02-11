@@ -2,7 +2,6 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 use hyperlight_nanvix::{cache, RuntimeConfig, Sandbox};
 use nanvix::log;
-use nanvix::registry::Registry;
 use std::path::PathBuf;
 
 /// A Hyperlight VMM wrapper with out-of-the-box support for running Nanvix microkernel guests
@@ -39,7 +38,7 @@ const DEFAULT_LOG_LEVEL: &str = "info";
 async fn setup_registry_command() -> Result<()> {
     println!("Setting up Nanvix registry...");
 
-    // Check cache status first using shared cache utilities
+    // Check cache status first using local filesystem probes
     let kernel_cached = cache::is_binary_cached("kernel.elf");
     let qjs_cached = cache::is_binary_cached("qjs");
     let python_cached = cache::is_binary_cached("python3");
@@ -47,14 +46,12 @@ async fn setup_registry_command() -> Result<()> {
     if kernel_cached && qjs_cached && python_cached {
         println!("Registry already set up at ~/.cache/nanvix-registry/");
     } else {
-        // Trigger registry download by requesting key binaries
-        let registry = Registry::new(None);
-
+        // Download missing binaries via get_cached_binary_path (local first, registry fallback)
         if !kernel_cached {
             print!("Downloading kernel.elf... ");
-            let _kernel = registry
-                .get_cached_binary("hyperlight", "single-process", "kernel.elf")
-                .await?;
+            cache::get_cached_binary_path("kernel.elf")
+                .await
+                .ok_or_else(|| anyhow::anyhow!("Failed to download kernel.elf"))?;
             println!("done");
         } else {
             println!("kernel.elf already cached");
@@ -62,9 +59,9 @@ async fn setup_registry_command() -> Result<()> {
 
         if !qjs_cached {
             print!("Downloading qjs binary... ");
-            let _qjs = registry
-                .get_cached_binary("hyperlight", "single-process", "qjs")
-                .await?;
+            cache::get_cached_binary_path("qjs")
+                .await
+                .ok_or_else(|| anyhow::anyhow!("Failed to download qjs"))?;
             println!("done");
         } else {
             println!("qjs already cached");
@@ -72,9 +69,9 @@ async fn setup_registry_command() -> Result<()> {
 
         if !python_cached {
             print!("Downloading python3 binary... ");
-            let _python = registry
-                .get_cached_binary("hyperlight", "single-process", "python3")
-                .await?;
+            cache::get_cached_binary_path("python3")
+                .await
+                .ok_or_else(|| anyhow::anyhow!("Failed to download python3"))?;
             println!("done");
         } else {
             println!("python3 already cached");

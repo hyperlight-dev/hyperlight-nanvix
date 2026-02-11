@@ -90,8 +90,8 @@ checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
 
 [[package]]
 name = "arch"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "cfg-if",
  "config",
@@ -333,8 +333,8 @@ dependencies = [
 
 [[package]]
 name = "config"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "cfg-if",
 ]
@@ -347,8 +347,8 @@ checksum = "7c74b8349d32d297c9134b8c88677813a227df8f779daa29bfc29c183fe3dca6"
 
 [[package]]
 name = "control-plane-api"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "config",
  "num_enum",
@@ -526,8 +526,8 @@ checksum = "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f"
 
 [[package]]
 name = "error"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "sysapi",
 ]
@@ -829,8 +829,8 @@ checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
 
 [[package]]
 name = "hwloc"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
  "libc",
@@ -963,6 +963,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap",
+ "dirs",
  "libc",
  "nanvix",
  "napi",
@@ -1245,8 +1246,8 @@ dependencies = [
 
 [[package]]
 name = "linuxd"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
  "config",
@@ -1354,8 +1355,8 @@ dependencies = [
 
 [[package]]
 name = "nanvix"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
  "config",
@@ -1373,8 +1374,8 @@ dependencies = [
 
 [[package]]
 name = "nanvix-http"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
  "config",
@@ -1397,14 +1398,16 @@ dependencies = [
 
 [[package]]
 name = "nanvix-registry"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
+ "bytes",
  "dirs",
  "reqwest",
  "serde",
  "serde_json",
+ "sha2",
  "syslog",
  "tokio",
  "uuid",
@@ -1412,8 +1415,8 @@ dependencies = [
 
 [[package]]
 name = "nanvix-sandbox"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
  "cfg-if",
@@ -1422,6 +1425,7 @@ dependencies = [
  "hwloc",
  "libc",
  "linuxd",
+ "rand",
  "sys",
  "syscomm",
  "syslog",
@@ -1432,8 +1436,8 @@ dependencies = [
 
 [[package]]
 name = "nanvix-sandbox-cache"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
  "config",
@@ -1445,8 +1449,8 @@ dependencies = [
 
 [[package]]
 name = "nanvix-terminal"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
  "libc",
@@ -1687,8 +1691,8 @@ dependencies = [
 
 [[package]]
 name = "profiler"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "cfg-if",
  "syslog",
@@ -2336,8 +2340,8 @@ checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
 
 [[package]]
 name = "static_assert"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 
 [[package]]
 name = "strsim"
@@ -2384,8 +2388,8 @@ dependencies = [
 
 [[package]]
 name = "sys"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "config",
  "error",
@@ -2394,8 +2398,8 @@ dependencies = [
 
 [[package]]
 name = "sysapi"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "config",
  "static_assert",
@@ -2403,8 +2407,8 @@ dependencies = [
 
 [[package]]
 name = "syscall"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "arch",
  "cfg-if",
@@ -2418,8 +2422,8 @@ dependencies = [
 
 [[package]]
 name = "syscomm"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "config",
  "libc",
@@ -2430,8 +2434,8 @@ dependencies = [
 
 [[package]]
 name = "syslog"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "flexi_logger",
  "log",
@@ -2440,8 +2444,8 @@ dependencies = [
 
 [[package]]
 name = "syslog-macros"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2697,8 +2701,8 @@ checksum = "e421abadd41a4225275504ea4d6566923418b7f05506fbc9c0fe86ba7396114b"
 
 [[package]]
 name = "type-safe"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 
 [[package]]
 name = "typenum"
@@ -2744,8 +2748,8 @@ dependencies = [
 
 [[package]]
 name = "user-vm-api"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "config",
  "serde",
@@ -2756,8 +2760,8 @@ dependencies = [
 
 [[package]]
 name = "uservm"
-version = "0.11.112"
-source = "git+https://github.com/nanvix/nanvix?rev=7752e9f2deb4a5606f9885e4c130eec4ea583de1#7752e9f2deb4a5606f9885e4c130eec4ea583de1"
+version = "0.11.133"
+source = "git+https://github.com/nanvix/nanvix?rev=cc9c508918bd17678e9d790f10a6a7c20b7902da#cc9c508918bd17678e9d790f10a6a7c20b7902da"
 dependencies = [
  "anyhow",
  "arch",
