@@ -26,6 +26,16 @@ impl WorkloadType {
         }
     }
 
+    /// Get the registry package name for this workload type.
+    /// Returns `None` for workload types that don't require a package installation.
+    pub fn package_name(&self) -> Option<&'static str> {
+        match self {
+            WorkloadType::JavaScript => Some("quickjs"),
+            WorkloadType::Python => Some("python"),
+            WorkloadType::Binary => None,
+        }
+    }
+
     /// Get the file extensions associated with this workload type
     pub fn extensions(&self) -> &'static [&'static str] {
         match self {
@@ -141,11 +151,6 @@ impl Runtime {
         Ok(Self { config, registry })
     }
 
-    /// Check if a binary exists in the cache and return its path if found
-    async fn get_cached_binary_path(&self, binary_name: &str) -> Option<String> {
-        cache::get_cached_binary_path(binary_name).await
-    }
-
     /// Clear the nanvix registry cache to force fresh downloads
     pub async fn clear_cache(&self) -> Result<()> {
         log::info!("Clearing nanvix registry cache...");
@@ -163,45 +168,46 @@ impl Runtime {
             anyhow::anyhow!("Could not determine workload type for {:?}", workload_path)
         })?;
 
+        // Verify the workload file exists before proceeding
+        if !workload_path.exists() {
+            anyhow::bail!("Workload file not found: {:?}", workload_path);
+        }
+
         // Use hardcoded values for machine and deployment type (hyperlight single-process)
         let machine_type = "hyperlight";
         let deployment_type = "single-process";
+
+        // Install the required package (and its dependencies) for scripted workloads,
+        // but only when the interpreter binary is not already present in the cache.
+        // This avoids unnecessary I/O and network calls on the common (cached) path.
+        if let Some(package_name) = workload_type.package_name() {
+            if !cache::is_binary_cached(workload_type.binary_name()) {
+                log::info!("Installing package '{}' and dependencies...", package_name);
+                self.registry
+                    .install(machine_type, deployment_type, package_name, true)
+                    .await?;
+            }
+        }
 
         // Get interpreter binary (only needed for scripted workloads)
         let binary_path = if matches!(workload_type, WorkloadType::Binary) {
             // For binary workloads, we don't need an interpreter
             String::new()
-        } else if let Some(cached_path) = self
-            .get_cached_binary_path(workload_type.binary_name())
-            .await
-        {
-            log::info!(
-                "Using cached {} binary: {}",
-                workload_type.binary_name(),
-                cached_path
-            );
-            cached_path
         } else {
-            log::info!(
-                "{} not cached, downloading from registry...",
-                workload_type.binary_name()
-            );
-            self.registry
-                .get_cached_binary(machine_type, deployment_type, workload_type.binary_name())
-                .await?
+            cache::get_cached_binary_path(workload_type.binary_name())
+                .await
+                .ok_or_else(|| {
+                    anyhow::anyhow!(
+                        "Failed to locate {} binary in cache or registry",
+                        workload_type.binary_name()
+                    )
+                })?
         };
 
         // Get kernel path for terminal configuration
-        let kernel_path = if let Some(cached_path) = self.get_cached_binary_path("kernel.elf").await
-        {
-            log::info!("Using cached kernel binary: {}", cached_path);
-            cached_path
-        } else {
-            log::info!("kernel.elf not cached, downloading from registry...");
-            self.registry
-                .get_cached_binary(machine_type, deployment_type, "kernel.elf")
-                .await?
-        };
+        let kernel_path = cache::get_cached_binary_path("kernel.elf")
+            .await
+            .ok_or_else(|| anyhow::anyhow!("Failed to locate kernel.elf in cache or registry"))?;
 
         // Ensure the temporary directory exists for socket creation
         std::fs::create_dir_all(&self.config.tmp_directory)?;

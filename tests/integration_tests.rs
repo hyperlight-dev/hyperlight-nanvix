@@ -93,7 +93,10 @@ async fn test_nonexistent_file() {
     let mut sandbox = Sandbox::new(config).expect("Failed to create sandbox");
 
     let result = sandbox.run("truly_nonexistent_file_12345.js").await;
-    assert!(result.is_ok());
+    assert!(
+        result.is_err(),
+        "Running a nonexistent file should return an error"
+    );
 }
 
 #[tokio::test]
