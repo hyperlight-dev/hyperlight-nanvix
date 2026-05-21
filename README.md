@@ -1,6 +1,11 @@
 # hyperlight-nanvix
 
-> ⚠️ **Note**: This wrapper currently only supports Hyperlight's KVM backend
+> **ℹ️ Note** — This project is no longer actively maintained.
+>
+> Currently supported Hyperlight guests:
+> - **[hyperlight-wasm](https://github.com/hyperlight-dev/hyperlight-wasm)**
+> - **[hyperlight-js](https://github.com/hyperlight-dev/hyperlight-js)**
+> - **[hyperlight-unikraft](https://github.com/hyperlight-dev/hyperlight-unikraft)**
 
 A Hyperlight VMM wrapper for running JavaScript, Python, C, and C++ programs in [Nanvix OS](https://github.com/nanvix/).
 
